@@ -75,13 +75,11 @@ public class FlightService {
     public Flight updateFlight(int flight_id, Flight flight) {
         Flight existingFlight = flightDAO.getFlightById(flight_id);
         if (existingFlight != null) {
-            flight.setFlight_id(flight_id); // set the flight ID to the existing ID
-            boolean isUpdated = flightDAO.updateFlight(flight_id, flight); // pass the flight_id along with the flight object
-            if (isUpdated) {
-                return flight; // return the updated flight object
-            }
+            flight.setFlight_id(flight_id);
+            flightDAO.updateFlight(flight_id, flight);
+            return flight;
         }
-        return null; // flight not found or update unsuccessful
+    return null;
     }
 
     /**
