@@ -53,7 +53,10 @@ public class FlightService {
      *         inform our provide the front-end client with information about the added Flight.
      */
     public Flight addFlight(Flight flight){
-        return null;
+         // Call the insertFlight method of FlightDAO with the flight parameter
+         Flight insertedFlight = flightDAO.insertFlight(flight);
+         // Return the Flight returned by the FlightDAO's insertFlight method, which will contain the flight's ID
+         return insertedFlight;
     }
 
     /**
@@ -69,8 +72,16 @@ public class FlightService {
      *         unsuccessful. We do this to inform our application about successful/unsuccessful operations. (eg, the
      *         user should have some insight if they attempted to edit a nonexistent flight.)
      */
-    public Flight updateFlight(int flight_id, Flight flight){
-        return null;
+    public Flight updateFlight(int flight_id, Flight flight) {
+        Flight existingFlight = flightDAO.getFlightById(flight_id);
+        if (existingFlight != null) {
+            flight.setFlight_id(flight_id); // set the flight ID to the existing ID
+            boolean isUpdated = flightDAO.updateFlight(flight_id, flight); // pass the flight_id along with the flight object
+            if (isUpdated) {
+                return flight; // return the updated flight object
+            }
+        }
+        return null; // flight not found or update unsuccessful
     }
 
     /**
@@ -80,7 +91,7 @@ public class FlightService {
      * @return all flights in the database.
      */
     public List<Flight> getAllFlights() {
-        return null;
+        return flightDAO.getAllFlights();
     }
 
     /**
@@ -92,6 +103,6 @@ public class FlightService {
      * @return all flights departing from departure_city and arriving at arrival_city.
      */
     public List<Flight> getAllFlightsFromCityToCity(String departure_city, String arrival_city) {
-        return null;
+        return flightDAO.getAllFlightsFromCityToCity(departure_city, arrival_city);
     }
 }
